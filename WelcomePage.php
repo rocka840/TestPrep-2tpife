@@ -18,26 +18,31 @@
     </style>
 </head>
 <body>
-  
-
-<?php
-
-if(isset($_SESSION["nextpage"]) && $_SESSION["nextpage"]){
-    print $_SESSION["nextpage"];
-}
-
-
-?>
-
-
-<h1>Welcome</h1>
-
-<form method="GET">
-    <input type="hidden" value="0">
-    <input type="submit" value="submit"> 
-</form>
-
-
+    <h1>Welcome</h1>
+    <?php
+    if (isset($_SESSION["bookpage"]) && $_SESSION["bookpage"] > 0) {
+ 
+    ?>
+        <form method="GET">
+            <input type="hidden" name="page" value=<?=$_SESSION["bookpage"]?>>
+            <input type="submit" value="next" name="next">
+        </form>
+        <form method="GET">
+            <input type="hidden" name="page" value=<?=$_SESSION["bookpage"]?>>
+            <input type="submit" value="previous" name="previous">
+        </form>
+    <?php
+    } else {
+    ?>
+        <form method="GET">
+            <input type="hidden" name="page" value=0>
+            <input type="submit" value="next">
+        </form>
+    <?php
+ 
+    }
+    print $_SESSION["bookpage"];
+    ?>
 
 </body>
 </html>
