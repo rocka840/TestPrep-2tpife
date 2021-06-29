@@ -1,6 +1,12 @@
 <?php
-    session_start();
-
+session_start();
+if(!isset($_SESSION["hiddenItems"])){
+    $_SESSION["hiddenItems"] = [];
+}
+$arrayOfItems=["Ducks","Pinguins","Birds"];
+ 
+$order=["Birds","Pinguins","Ducks"];
+ 
 ?>
 
 <!DOCTYPE html>
@@ -19,27 +25,29 @@
     </style>
 </head>
 <body>
+    <h1>Guess the code:</h1>
     
-<h1>Click A Button To Delete:</h1>
-
 <?php
-    $food = array('bread', 'carrot', 'banana', 'zucchini', 'sushi');
-        for($i = 0; $i < sizeof($food); $i++){   
+        //var_dump($_POST);
+        for ($i = 0; $i < sizeof($arrayOfItems); $i++) {
+            if (isset($_POST[$arrayOfItems[$i]])) {
+                array_push($_SESSION["hiddenItems"], $i);
+            }
+        }
+        //var_dump($_SESSION["hiddenItems"]);
+        
+        for ($i = 0; $i < sizeof($arrayOfItems); $i++) {    
+            if(!in_array($i,$_SESSION["hiddenItems"])){
 ?>
-
-<form method="POST">
-    <input type="submit" value=<?=$food[$i]?> name="delete">
-</form>
-
-<?php
-}
-    if(isset($_POST["delete"])){
-        unset($food[$i]);
+        <form method="post">
+            <input type="hidden" name="<?=$arrayOfItems[$i]?>" value=<?=$arrayOfItems[$i]?>>
+            <input type="submit" value=<?=$arrayOfItems[$i]?>></br>
+            </form>
+<?php      
+        }
     }
-
-    $_SESSION["food"] = [];
-   
+    echo implode(', ', $_SESSION["hiddenItems"]);
 ?>
-
+        
 </body>
 </html>
